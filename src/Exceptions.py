@@ -1,5 +1,5 @@
 import sys
-
+from src.Logging import logging
 def create_error_message(error,error_details:sys):
     _,_,exc_tb = error_details.exc_info()
     filename = exc_tb.tb_frame.f_code.co_filename
@@ -21,4 +21,5 @@ class CustomException(Exception):
 #     try:
 #         a = 1/0
 #     except Exception as e:
+#         logging.info("Exception occured")
 #         raise CustomException(e,sys)
