@@ -12,6 +12,7 @@ def save_model(object,path):
 
         with open(path,"wb") as file:
             pickle.dump(object, file)
+
     except Exception as e:
         raise CustomException(e,sys)
     
@@ -35,6 +36,13 @@ def evaluate_model(models, params,x_train,x_test,y_train,y_test):
             report[model] = test_r2
         return report
     
+
+    except Exception as e:
+        raise CustomException(e,sys)
+
+def load_model(path):
+    try:
+        return pickle.load(open(path,"rb"))
 
     except Exception as e:
         raise CustomException(e,sys)
