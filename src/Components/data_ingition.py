@@ -5,12 +5,11 @@ from sklearn.model_selection import train_test_split
 from src.Logging import logging
 from src.Exceptions import CustomException
 from src.Components.data_transformation import Datatransformation
-
+from src.Components.model_trainer import ModelTrainer
 class DataIngestion:
     def __init__(self):
         # create_folder
         self.path = os.path.join(os.getcwd(),"artifacts")
-        print(self.path)
         if not os.path.exists(self.path):
             os.makedirs(self.path)
         self.datapath = os.path.join(self.path,"data.csv")
@@ -39,4 +38,8 @@ if __name__=="__main__":
     train_path,test_path = obj.read_data(r"C:\Users\HP\Downloads\stud.csv")
 
     transfromation_obj = Datatransformation()
-    transfromation_obj.initiate_data_preprocessing(train_path,test_path)
+    train_data,test_data = transfromation_obj.initiate_data_preprocessing(train_path,test_path)
+
+    model_trainer_obj = ModelTrainer()
+    model_trainer_obj.train_model(train_data=train_data, test_data=test_data)
+    

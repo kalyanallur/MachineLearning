@@ -8,10 +8,10 @@ from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
-
+from src.Utils import save_model
 class Datatransformation:
     def __init__(self):
-        pass
+        self.preprocessor_path = os.path.join(os.getcwd(),"artifacts","preprocessor.pkl")
     def data_Preprocessing(self):
         try:
             num_columns = ['reading_score', 
@@ -49,6 +49,8 @@ class Datatransformation:
                 train_df =pd.read_csv(train_data_path)
                 test_df = pd.read_csv(test_data_path)
 
+                logging.info("Train and test data loaded")
+
                 x_training_data = train_df.drop("math_score",axis=1) 
                 y_train = train_df["math_score"]
                 x_testing_data = test_df.drop("math_score",axis=1) 
@@ -58,8 +60,11 @@ class Datatransformation:
                 x_test = preprocessing_obj.transform(x_testing_data)
                 preprocessed_train_data= np.concatenate([x_train,np.array(y_train).reshape(-1,1)], axis=1)
                 preprocessed_test_data = np.concatenate([x_test,np.array(y_test).reshape(-1,1)], axis=1)
-
-                print(preprocessed_test_data)
+                logging.info("data preprocessing is completed")
+                
+                save_model(preprocessing_obj,self.preprocessor_path)
+                logging.info("preprocessor.pkl Generated")
+                return preprocessed_train_data, preprocessed_test_data
 
             except Exception as e:
                  raise CustomException(e,sys)
